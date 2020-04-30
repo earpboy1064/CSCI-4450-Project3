@@ -52,8 +52,8 @@ s3.upload_fileobj(file, "wyatt-in", fn)
 
 ########################################################################################  Database
 region_name='us-east-1',
-aws_access_key_id='AKIAWA3VERQCVBU3QCH3',
-aws_secret_access_key='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'
+aws_access_key_id='AK**********CH3',
+aws_secret_access_key='cgX**************TYdD'
 
 
 
