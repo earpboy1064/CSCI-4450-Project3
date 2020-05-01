@@ -1,0 +1,3 @@
+The dbUpload file is the python script for uploading files from the html page form2 
+The Pages labled generic# are the 9 static pages required for the assignment
+form2 is the dynamic page that calls the python script
