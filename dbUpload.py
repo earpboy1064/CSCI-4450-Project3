@@ -6,7 +6,7 @@ import boto3
 import cgitb
 import cgi
 import os
-import shutil  
+ 
 
 
 
@@ -17,12 +17,10 @@ cgitb.enable()
 print ("Content-type:text/html\r\n\r\n")
 
 form = cgi.FieldStorage()   
-
-
-name = form.getfirst("name", "0") # 0 is optional - if no 
-Student_Number = form.getfirst("Student_Number", "0")
-email = form.getfirst("email", "0")
-fileitem = form['fileToUpload']
+name = form.getfirst("name", "0") # 0 is optional - if no  # gets info from html file 
+Student_Number = form.getfirst("Student_Number", "0") # gets info from html file 
+email = form.getfirst("email", "0")# gets info from html file 
+fileitem = form['fileToUpload'] # gets info from html file 
 
 
 
@@ -38,26 +36,22 @@ else:
     message = 'No file was uploaded'
 
 
-#################################################################################
+#################################################################################  s3
 errormessage = 'no error'
 try:
     file = open("files/"+fn, 'rb')
 except IOError:
     errormessage = 'error could not open'
 
-s3 = boto3.client('s3',region_name='us-east-2')
-#with open('files/'+fn, "rb") as f:
-s3.upload_fileobj(file, "wyatt-in", fn)
+s3 = boto3.client('s3',region_name='us-east-2') #connects to s3
+s3.upload_fileobj(file, "wyatt-in", '('+Student_Number+')'+fn)  #transfers the file to s3
 
 
 ########################################################################################  Database
-region_name='us-east-1',
-aws_access_key_id='AK**********CH3',
-aws_secret_access_key='cgX**************TYdD'
 
 
 
-dynamodb = boto3.resource('dynamodb',region_name='us-east-2')
+dynamodb = boto3.resource('dynamodb',region_name='us-east-2') # connects to dynamoDB
 
 #this is the table name
 table = dynamodb.Table('Applications')
@@ -87,20 +81,11 @@ item = response['Item']  # item from database
 
 
 
-
-
-
-
-
-
 #########################################################################################
 
-#print ("Content-type:text/html\r\n\r\n")
 print ("<html>")
 print ("<body>")
-#print ("<p>%s</p>" % item)
 print ("<p>%s</p>" % message)
-print ("<p>%s</p>" % errormessage)
 print ("</body>")
 print ("</html>")
 
